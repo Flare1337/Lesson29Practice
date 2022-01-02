@@ -1,8 +1,6 @@
 import java.sql.*;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.stream.LongStream;
-import java.util.stream.Stream;
 
 public class Main {
 
@@ -14,7 +12,7 @@ public class Main {
         }
     }
 
-    public Statement getConnectionStatementToDB()   {
+    public Statement getConnectionStatement()   {
         Statement statement = null;
         try (Connection connection = DriverManager.getConnection("jdbc:sqlite:sample.db")) {
             statement = connection.createStatement();
@@ -25,13 +23,13 @@ public class Main {
     }
 
     public void createNewStudentsTable() throws SQLException {
-            getConnectionStatementToDB().executeUpdate("CREATE TABLE person (id INTEGER, name VARCHAR(100), " +
+            getConnectionStatement().executeUpdate("CREATE TABLE person (id INTEGER, name VARCHAR(100), " +
                                                             "averageMark INTEGER, faculty VARCHAR(100), age INTEGER)");
             System.out.println("Table is created");
     }
 
     public void deleteStudentsTable() throws SQLException {
-            getConnectionStatementToDB().executeUpdate("DROP TABLE person");
+            getConnectionStatement().executeUpdate("DROP TABLE person");
             System.out.println("Table with students is deleted");
     }
 
@@ -49,13 +47,13 @@ public class Main {
         int ID = randomID.nextInt(500);
 
         Student student = new Student(ID ,name, averageMark, faculty, age);
-        getConnectionStatementToDB().executeUpdate(String.format("INSERT INTO person VALUES(%d, '%s', %d, %s, %d)",
+        getConnectionStatement().executeUpdate(String.format("INSERT INTO person VALUES(%d, '%s', %d, %s, %d)",
                 student.getID(), student.getName(), student.getAverageMark(), student.getFaculty(), student.getAge()));
         System.out.println("The student is added!");
     }
 
     public void displaySortedStudentTable() throws SQLException {
-         getConnectionStatementToDB().executeUpdate("SELECT * FROM person ORDER BY name ASC");
+         getConnectionStatement().executeUpdate("SELECT * FROM person ORDER BY name ASC");
          System.out.println("The sorted table is displayed!");
     }
 
@@ -74,26 +72,26 @@ public class Main {
             switch (scanner.nextInt()) {
                 case 1 :
                     System.out.print("Enter the id: ");
-                    resultSet = getConnectionStatementToDB().executeQuery(String.
+                    resultSet = getConnectionStatement().executeQuery(String.
                             format("SELECT * FROM person WHERE id = %d ORDER BY name ASC", scanner.nextInt()));
                     break;
                 case 2 :
                     System.out.print("Enter the name: ");
-                    resultSet = getConnectionStatementToDB().executeQuery(String.
+                    resultSet = getConnectionStatement().executeQuery(String.
                             format("SELECT * FROM person WHERE name = '%s' ORDER BY name ASC", scanner.nextLine()));
                     break;
                 case 3 :
-                    resultSet = getConnectionStatementToDB().executeQuery(String.
+                    resultSet = getConnectionStatement().executeQuery(String.
                             format("SELECT * FROM person WHERE averageMark = %d ORDER BY name ASC", scanner.nextInt()));
                     break;
                 case 4 :
                     System.out.print("Enter the faculty name: ");
-                    resultSet = getConnectionStatementToDB().executeQuery(String.
+                    resultSet = getConnectionStatement().executeQuery(String.
                             format("SELECT * FROM person WHERE faculty = '%s' ORDER BY name ASC", scanner.nextLine()));
                     break;
                 case 5 :
                     System.out.print("Enter the age: ");
-                    resultSet = getConnectionStatementToDB().executeQuery(String.
+                    resultSet = getConnectionStatement().executeQuery(String.
                             format("SELECT * FROM person WHERE age = %d ORDER BY name ASC", scanner.nextInt()));
                     break;
                 default:
