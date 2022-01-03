@@ -3,6 +3,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
+    Statement statement = null;
 
     public static void main(String[] args) {
         try {
@@ -13,9 +14,11 @@ public class Main {
     }
 
     public Statement getConnectionStatement()   {
-        Statement statement = null;
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:sample.db")) {
-            statement = connection.createStatement();
+        try {
+            if (statement == null) {
+                Connection connection = DriverManager.getConnection("jdbc:sqlite:sample.db");
+                statement = connection.createStatement();
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -37,23 +40,33 @@ public class Main {
         Scanner input = new Scanner(System.in);
         System.out.println("Enter student's name");
         String name = input.nextLine();
-        System.out.println("Enter student's average mark");
-        int averageMark = input.nextInt();
         System.out.println("Enter student's faculty");
         String faculty = input.nextLine();
+        System.out.println("Enter student's average mark");
+        int averageMark = input.nextInt();
         System.out.println("Enter student's age");
         int age = input.nextInt();
         Random randomID = new Random();
         int ID = randomID.nextInt(500);
 
         Student student = new Student(ID ,name, averageMark, faculty, age);
-        getConnectionStatement().executeUpdate(String.format("INSERT INTO person VALUES(%d, '%s', %d, %s, %d)",
+        getConnectionStatement().executeUpdate(String.format("INSERT INTO person VALUES(%d, '%s', %d, '%s', %d)",
                 student.getID(), student.getName(), student.getAverageMark(), student.getFaculty(), student.getAge()));
         System.out.println("The student is added!");
     }
 
     public void displaySortedStudentTable() throws SQLException {
-         getConnectionStatement().executeUpdate("SELECT * FROM person ORDER BY name ASC");
+        ResultSet resultSet = getConnectionStatement().executeQuery("SELECT * FROM person ORDER BY name ASC");
+        while (resultSet != null && resultSet.next()) {
+            var id = resultSet.getInt("id");
+            var name = resultSet.getString("name");
+            var averageMark = resultSet.getInt("averageMark");
+            var faculty = resultSet.getString("faculty");
+            var age = resultSet.getInt("age");
+
+            System.out.printf("Current student data: id %d, name %s, average mark %d, faculty %s, age %d%n",
+                                                                        id, name, averageMark, faculty, age);
+        }
          System.out.println("The sorted table is displayed!");
     }
 
@@ -61,14 +74,20 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         int userInput = 0;
         ResultSet resultSet = null;
+        int id = 0;
+        String name = "";
+        int averageMark = 0;
+        String faculty = "";
+        int age = 0;
 
-        System.out.println("To find student(s) pick a field to be searched \n" +
-                "1 - ID \n" +
-                "2 - student(s) name \n" +
-                "3 - average mark \n" +
-                "4 - faculty \n" +
-                "5 - age value");
-        while (userInput != 2) {
+        while (userInput != 9) {
+            System.out.println("To find student(s) pick a field to be searched \n" +
+                    "1 - ID \n" +
+                    "2 - student(s) name \n" +
+                    "3 - average mark \n" +
+                    "4 - faculty \n" +
+                    "5 - age value \n" +
+                    "If you want to finish work, type - 9");
             switch (scanner.nextInt()) {
                 case 1 :
                     System.out.print("Enter the id: ");
@@ -98,28 +117,25 @@ public class Main {
                     System.out.println("Try again, please. You haven't typed any of the given command.");
             }
 
-            int id = resultSet.getInt("id");
-            String name = resultSet.getString("name");
-            int averageMark = resultSet.getInt("averageMark");
-            String faculty = resultSet.getString("faculty");
-            int age = resultSet.getInt("age");
+            System.out.printf("Current student data: id %d, name %s, average mark %d, faculty %s, age %d%n",
+                    id, name, averageMark, faculty, age);
 
-            System.out.printf("Current student data: %d, '%s', %d, %s, %d ", id, name, averageMark, faculty, age);
-
-            while (resultSet.next()) {
+            while (resultSet != null && resultSet.next()) {
                 id = resultSet.getInt("id");
                 name = resultSet.getString("name");
                 averageMark = resultSet.getInt("averageMark");
                 faculty = resultSet.getString("faculty");
                 age = resultSet.getInt("age");
 
-                System.out.printf("Current student data: %d, '%s', %d, %s, %d ", id, name, averageMark, faculty, age);
+                System.out.printf("Current student data: id %d, name %s, average mark %d, faculty %s, age %d%n",
+                        id, name, averageMark, faculty, age);
             }
 
-            System.out.println("If you want to proceed, type \"1\" otherwise \"2\" ");
+            System.out.println("Do you want to proceed?");
             userInput = scanner.nextInt();
+            System.out.println("Ok");
         }
-        System.out.println("The student(s) found!");
+        System.out.println("The found student(s)!");
     }
 
     public void invokeConsoleMenu() throws SQLException {
