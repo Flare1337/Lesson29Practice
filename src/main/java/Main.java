@@ -52,7 +52,7 @@ public class Main {
         Student student = new Student(ID ,name, averageMark, faculty, age);
         getConnectionStatement().executeUpdate(String.format("INSERT INTO person VALUES(%d, '%s', %d, '%s', %d)",
                 student.getID(), student.getName(), student.getAverageMark(), student.getFaculty(), student.getAge()));
-        System.out.println("The student is added!");
+        System.out.println("The student has benn added!");
     }
 
     public void displaySortedStudentTable() throws SQLException {
@@ -67,7 +67,7 @@ public class Main {
             System.out.printf("Current student data: id %d, name %s, average mark %d, faculty %s, age %d%n",
                                                                         id, name, averageMark, faculty, age);
         }
-         System.out.println("The sorted table is displayed!");
+         System.out.println("The sorted table has been displayed!");
     }
 
     public void findStudentsInTable() throws SQLException {
@@ -135,6 +135,9 @@ public class Main {
             userInput = scanner.nextInt();
             System.out.println("Ok");
         }
+        if (resultSet != null) {
+            resultSet.close();
+        }
         System.out.println("The found student(s)!");
     }
 
@@ -174,11 +177,21 @@ public class Main {
                 break;
                 case 8: System.out.println("The downloading of a film is started");
                 break;
-                case 9: System.out.println("Ok, i'm done...");
+                case 9:
+                    closeConnectionToDB();
+                    System.out.println("Ok, i'm done...");
                 break;
                 default:
                     System.out.println("What are you try'na to say?");
             }
+        }
+    }
+
+    private void closeConnectionToDB() {
+        try {
+            getConnectionStatement().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
