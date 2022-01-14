@@ -141,6 +141,14 @@ public class Main {
         System.out.println("The found student(s)!");
     }
 
+    private void closeConnectionToDB() {
+        try {
+            getConnectionStatement().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void invokeConsoleMenu() throws SQLException {
         int input = 0;
         while (input != 9) {
@@ -184,14 +192,6 @@ public class Main {
                 default:
                     System.out.println("What are you try'na to say?");
             }
-        }
-    }
-
-    private void closeConnectionToDB() {
-        try {
-            getConnectionStatement().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 }
