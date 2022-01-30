@@ -39,10 +39,14 @@ public class LibraryMain {
     private ILibraryRepository initializeRepository(Connection connection) throws SQLException {
         BookDAO bookDAO = new BookDAO(connection);
         AuthorDAO authorDAO = new AuthorDAO(connection);
+        UserDAO userDAO = new UserDAO(connection);
+        ReviewDAO reviewDAO = new ReviewDAO(connection);
 
         authorDAO.createTable();
         bookDAO.createTable();
+        userDAO.createTable();
+        reviewDAO.createTable();
 
-        return new SqlLibraryRepository(bookDAO, authorDAO);
+        return new SqlLibraryRepository(bookDAO, authorDAO, userDAO, reviewDAO);
     }
 }

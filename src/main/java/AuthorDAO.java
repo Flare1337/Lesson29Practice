@@ -98,7 +98,13 @@ public class AuthorDAO {
         }
     }
 
-
+    public void deleteByName(String name) throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            ResultSet cursor = statement.executeQuery(
+                    String.format("DELETE FROM author WHERE name = %%%s%%", name));
+            cursor.close();
+        }
+    }
 
     private Author createAuthorFromCursorIfPossible(ResultSet cursor) throws SQLException {
         Author author = new Author();
@@ -106,6 +112,14 @@ public class AuthorDAO {
         author.name = cursor.getString("name");
         author.birthYear = cursor.getInt("birth_year");
         return author;
+    }
+
+    public void deleteByID(int id) throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            ResultSet cursor = statement.executeQuery(
+                    String.format("DELETE FROM author WHERE id = %%%d%%", id));
+            cursor.close();
+        }
     }
 }
 

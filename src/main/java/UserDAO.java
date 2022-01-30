@@ -13,8 +13,7 @@ public class UserDAO {
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS user (" +
                     "user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "user_name VARCHAR(100), " +
-                    "review_ID INTEGER)");
+                    "user_name VARCHAR(100))");
         }
     }
 
@@ -56,10 +55,10 @@ public class UserDAO {
         return books;
     }
 
-    public User getUserByReviewID(int review_id) throws SQLException {
+    public User getUserByUserID(int user_id) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(
-                "SELECT * FROM user WHERE review_id = ?", review_id)) {
-            statement.setInt(1, review_id);
+                "SELECT * FROM user WHERE user_id = ?", user_id)) {
+            statement.setInt(1, user_id);
             ResultSet cursor = statement.executeQuery();
             if (cursor.next()) {
                 return createUserFromCursorIfPossible(cursor);
@@ -88,20 +87,19 @@ public class UserDAO {
             throw new IllegalArgumentException("ID is not set");
         }
 
-        String sql = "UPDATE user SET user_name = ? WHERE user_id = ? AND review_id = ?";
+        String sql = "UPDATE user SET user_name = ? WHERE user_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, user.name);
             statement.setInt(2, user.user_id);
-            statement.setInt(3, user.review_id);
 
             statement.executeUpdate();
         }
     }
 
-    public void deleteByName(String text) throws SQLException {
+    public void deleteByName(String name) throws SQLException {
         try (Statement statement = connection.createStatement()) {
             ResultSet cursor = statement.executeQuery(
-                    String.format("DELETE FROM user WHERE user_name = %%%s%%", text));
+                    String.format("DELETE FROM user WHERE user_name = %%%s%%", name));
             cursor.close();
         }
     }
@@ -118,7 +116,6 @@ public class UserDAO {
         User user = new User();
         user.user_id = cursor.getInt("user_id");
         user.name = cursor.getString("user_name");
-        user.review_id = cursor.getInt("review_id");
         return user;
     }
 }

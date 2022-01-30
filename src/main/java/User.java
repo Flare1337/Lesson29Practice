@@ -1,7 +1,6 @@
 public class User {
     public int user_id;
     public String name;
-    public int review_id;
 
     public User() {
     }
@@ -13,9 +12,8 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + user_id +
+                "user_id=" + user_id +
                 ", name='" + name + '\'' +
-                ", review_id=" + review_id +
                 '}';
     }
 }
