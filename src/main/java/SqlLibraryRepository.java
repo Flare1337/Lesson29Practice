@@ -1,5 +1,4 @@
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class SqlLibraryRepository implements ILibraryRepository {
@@ -73,7 +72,7 @@ public class SqlLibraryRepository implements ILibraryRepository {
   //          throw new RuntimeException("Failed to save book", e);
   //      }
         try {
-            return bookDAO.findByName(name);
+            return bookDAO.findByTitle(name);
         } catch (SQLException e) {
             throw new RuntimeException("Books are not found", e);
         }

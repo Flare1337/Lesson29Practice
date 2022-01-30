@@ -55,7 +55,7 @@ public class BookDAO {
         try (Statement statement = connection.createStatement()) {
             ResultSet cursor = statement.executeQuery("SELECT * FROM book");
             while (cursor.next()) {
-                books.add(createAuthorFromCursorIfPossible(cursor));
+                books.add(createBookFromCursorIfPossible(cursor));
             }
         }
         return books;
@@ -68,22 +68,22 @@ public class BookDAO {
             statement.setInt(1, author_ID);
             ResultSet cursor = statement.executeQuery();
             while (cursor.next()) {
-                books.add(createAuthorFromCursorIfPossible(cursor));
+                books.add(createBookFromCursorIfPossible(cursor));
             }
         }
         return books;
     }
 
-    public Collection<Book> findByName(String text) throws SQLException {
+    public Collection<Book> findByTitle(String text) throws SQLException {
         Collection<Book> books = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(
-                "SELECT book.* FROM author " +
+                "SELECT book.* FROM book " +
                         "JOIN author ON book.author_ID = author.id " +
                         "WHERE author.name LIKE ?")) {
             statement.setString(1, "%" + text + "%");
             ResultSet cursor = statement.executeQuery();
             while (cursor.next()) {
-                books.add(createAuthorFromCursorIfPossible(cursor));
+                books.add(createBookFromCursorIfPossible(cursor));
             }
         }
         return books;
@@ -120,7 +120,7 @@ public class BookDAO {
         }
     }
 
-    private Book createAuthorFromCursorIfPossible(ResultSet cursor) throws SQLException {
+    private Book createBookFromCursorIfPossible(ResultSet cursor) throws SQLException {
         Book book = new Book();
         book.id = cursor.getInt("id");
         book.title = cursor.getString("title");
