@@ -6,10 +6,8 @@ public class Review {
     public Review() {
     }
 
-    public Review(int review_id, String content, int owner_id) {
-        this.review_id = review_id;
+    public Review(String content) {
         this.content = content;
-        this.owner_id = owner_id;
     }
 
     @Override

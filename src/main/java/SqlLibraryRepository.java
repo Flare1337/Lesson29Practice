@@ -133,7 +133,7 @@ public class SqlLibraryRepository implements ILibraryRepository {
     }
 
     @Override
-    public Collection<Review> getReviewsByID(int user_id) {
+    public Collection<Review> getReviewsByUserID(int user_id) {
         try {
             return reviewDAO.getReviewsByUserID(user_id);
         } catch (SQLException e) {

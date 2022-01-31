@@ -23,10 +23,11 @@ public class ReviewDAO {
             throw new IllegalArgumentException("ID is: " + review.review_id);
         }
 
-        final String sql = "INSERT INTO review(content) VALUES(?)";
+        final String sql = "INSERT INTO review(content, owner_id) VALUES(?,?)";
         try (PreparedStatement statement = connection.prepareStatement(sql,
                 Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, review.content);
+            statement.setInt(2, review.owner_id);
 
             int affectedRows = statement.executeUpdate();
 

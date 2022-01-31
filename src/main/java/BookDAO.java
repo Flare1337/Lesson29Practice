@@ -24,7 +24,7 @@ public class BookDAO {
         }
 
         if (book.authorID == 0) {
-            throw new IllegalArgumentException("Author ID is not set");
+            throw new IllegalArgumentException("ID of author is not set");
         }
 
         final String sql = "INSERT INTO book (title, author_id) VALUES(?,?)";

@@ -17,12 +17,12 @@ public interface ILibraryRepository {
     Collection<Book> findBooksByAuthorName(String name);
     Collection<Book> findBooksByTitle(String title);
     void saveBook(Book book, Author author);
-    void deleteBookByTitle(String content);
+    void deleteBookByTitle(String title);
     void deleteBookByID(int id);
 
     // review methods
     Collection<Review> findReviewsByContent(String content);
-    Collection<Review> getReviewsByID(int user_id);
+    Collection<Review> getReviewsByUserID(int user_id);
     Collection<Review> getAllReviews() throws SQLException;
     void saveReview(User user, Review review);
     void deleteReviewByContent(String content);
