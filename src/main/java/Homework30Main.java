@@ -5,15 +5,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-public class LibraryMain {
+public class Homework30Main {
     Statement statement = null;
     static ILibraryRepository repository = null;
-    static LibraryMain libraryMain = new LibraryMain();
+    static Homework30Main homework30Main = new Homework30Main();
 
     public static void main(String[] args) {
         try {
-            Connection connection = libraryMain.connectToDB();
-            libraryMain.doSqlTasks(connection);
+            Connection connection = homework30Main.connectToDB();
+            homework30Main.doSqlTasks(connection);
         } catch (ConnectException | SQLException e) {
             e.printStackTrace();
         }
@@ -250,12 +250,12 @@ public class LibraryMain {
     }
 
     public void doSqlTasks(Connection connection) throws SQLException {
-        repository = libraryMain.initializeRepository(connection);
+        repository = homework30Main.initializeRepository(connection);
         Author author = new Author("Толкин", 1900);
         Book book = new Book("Властелин колец");
         User user = new User("Владимир");
         Review review = new Review("Концовка не очень, остальное не читал.");
 
-        libraryMain.invokeConsoleMenu(author, book, user, review);
+        homework30Main.invokeConsoleMenu(author, book, user, review);
     }
 }

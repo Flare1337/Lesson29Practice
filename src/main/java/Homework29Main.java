@@ -2,12 +2,12 @@ import java.sql.*;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Main {
+public class Homework29Main {
     Statement statement = null;
 
     public static void main(String[] args) {
         try {
-            new Main().invokeConsoleMenu();
+            new Homework29Main().invokeConsoleMenu();
         } catch (SQLException e) {
             e.printStackTrace();
         }
